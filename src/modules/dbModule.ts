@@ -1,7 +1,18 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/models/user/userModel';
 
 @Module({
-  imports: [MongooseModule.forRoot(process.env.MONGO_DB_URL)],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mongodb',
+      url: process.env.DATABASE_URL,
+      database: process.env.MONGODB_DATABASE,
+      entities: [User],
+      ssl: false,
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+    }),
+  ],
 })
 export class DbModule {}

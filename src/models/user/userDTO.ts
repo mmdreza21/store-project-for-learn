@@ -8,6 +8,7 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
+import { Role } from './userModel';
 
 export class LoginDto {
   @IsNotEmpty()
@@ -79,6 +80,8 @@ export class UserSignUpDTO {
     default: '123Asd',
   })
   password: string;
+
+  role?: Role;
 }
 
 export class UserEditDto {

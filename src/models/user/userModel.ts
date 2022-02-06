@@ -1,55 +1,45 @@
 import { AutoMap } from '@automapper/classes';
+import { Column, Entity, ObjectIdColumn } from 'typeorm';
 
-import { compare } from 'bcryptjs';
-import { Schema } from 'mongoose';
+// import { compare } from 'bcryptjs';
 
 export enum Role {
   AdminOfSite = 'AdminOfSite',
   User = 'User',
   Seller = 'Seller',
 }
-
+@Entity()
 export class User {
   @AutoMap()
+  @ObjectIdColumn()
+  id: any;
+  @AutoMap()
+  @Column({ type: 'enum', enum: Role, default: Role.User })
   role: Role;
   @AutoMap()
+  @Column()
   firstName: string;
   @AutoMap()
+  @Column()
   lastName: string;
   @AutoMap()
+  @Column()
   Phone: string;
   @AutoMap()
+  @Column()
   addresses: Array<string>;
   @AutoMap()
-  id: any;
-
-  @AutoMap()
+  @Column()
+  @Column()
   email: string;
+  @Column()
   userName: string;
-  resetPassToken: string;
-  dateOfToken: Date;
+  @Column()
   password: string;
-  validatePassword: (password: string) => boolean;
+  @Column()
+  resetPassToken: string;
+  @Column()
+  dateOfToken: Date;
+
+  // validatePassword: (password: string) => boolean;
 }
-
-export const userSchema: Schema = new Schema({
-  role: {
-    type: String,
-    enum: [Role.AdminOfSite, Role.Seller, Role.User],
-    default: Role.User,
-  },
-
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  addresses: { type: Array },
-  userName: { type: String, required: true },
-  phone: { type: String },
-
-  resetPassToken: String,
-  dateOfToken: Date,
-  password: { type: String, required: true },
-});
-userSchema.methods.validatePassword = function (password: string) {
-  return compare(password, this.password);
-};
