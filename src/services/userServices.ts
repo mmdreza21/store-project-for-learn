@@ -41,8 +41,7 @@ export class UserService {
   }
 
   async updateProfile(id: ObjectID, req: UserEditDto) {
-    let user = await this.findOneUser('id', id);
-    const user = { ...req };
+    let user = await this.user.update(id, { ...req });
     if (!user) throw new NotFoundException('کاربر پیدا نشد');
     return user;
   }
