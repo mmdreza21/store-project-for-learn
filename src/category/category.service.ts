@@ -1,26 +1,38 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'src/Prisma.service';
+import { CategoryEntity } from './entities/category.entity';
 
 @Injectable()
 export class CategoryService {
-  create(createCategoryDto: CreateCategoryDto) {
-    return 'This action adds a new category';
+  constructor(private readonly Prisma: PrismaService) {}
+  async create(data: Prisma.CategoryCreateInput): Promise<CategoryEntity> {
+    const cat = await this.Prisma.category.create({ data });
+    return cat;
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll() {
+    return this.Prisma.category.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(where: Prisma.CategoryWhereUniqueInput) {
+    const cat = await this.Prisma.category.findUnique({ where });
+    if (cat) throw new NotFoundException('category whit given id ENotFound ');
+    return cat;
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(
+    where: Prisma.CategoryWhereUniqueInput,
+    data: Prisma.CategoryCreateInput,
+  ) {
+    const cat = this.Prisma.category.update({ where, data });
+    if (cat) throw new NotFoundException('category whit given id ENotFound ');
+    return cat;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(where: Prisma.CategoryWhereUniqueInput) {
+    const cat = this.Prisma.category.delete({ where });
+    if (cat) throw new NotFoundException('category whit given id ENotFound ');
+    return cat;
   }
 }

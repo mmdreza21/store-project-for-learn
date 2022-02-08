@@ -6,6 +6,7 @@ import {
   Get,
   UseGuards,
   Request,
+  ForbiddenException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserDTO, UserSignUpDTO } from './dto/create-user.dto';
@@ -15,7 +16,7 @@ import { ApiResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { InjectMapper } from '@automapper/nestjs';
 import { Mapper } from '@automapper/core';
-import { UserEntity } from './entities/user.entity';
+import { Role, UserEntity } from './entities/user.entity';
 import { User } from '@prisma/client';
 
 @ApiTags('user')
@@ -28,6 +29,10 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserDto: UserSignUpDTO) {
+    if (createUserDto.role === Role.AdminOfSite)
+      throw new ForbiddenException(
+        'You can`t set the role don`t mass whit me my deer',
+      );
     const salt = await genSalt(10);
     const password = await hash(createUserDto.password, salt);
 

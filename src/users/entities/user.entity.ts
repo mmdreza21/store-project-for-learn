@@ -22,6 +22,10 @@ export class UserEntity {
   email: string;
   @AutoMap()
   userName: string;
+  @AutoMap()
+  createdAt: Date;
+  @AutoMap()
+  updatedAt: Date;
 
   password: string;
   resetPassToken: string | null;

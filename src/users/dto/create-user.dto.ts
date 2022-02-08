@@ -78,4 +78,8 @@ export class UserDTO {
   phone?: Number;
   @AutoMap()
   addresses?: Array<string>;
+  @AutoMap()
+  createdAt: Date;
+  @AutoMap()
+  updatedAt: Date;
 }
