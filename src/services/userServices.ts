@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 import { UserEditDto, UserSignUpDTO } from 'src/models/user/userDTO';
 import { User } from 'src/models/user/userModel';
-import { Repository } from 'typeorm';
+import { ObjectID, Repository } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -32,14 +32,18 @@ export class UserService {
     return newUser;
   }
 
-  // async findOneUser(): Promise<User> {
-  //   const user = new User();
-  //   return user;
-  // }
+  async findOneUser(
+    key: string,
+    value: ObjectID | string,
+  ): Promise<User | null> {
+    const user = await this.user.findOne({ [key]: value });
+    return user;
+  }
 
-  // async updateProfile() {
-  //   let user = await new User();
-  //   if (!user) throw new NotFoundException('کاربر پیدا نشد');
-  //   return user;
-  // }
+  async updateProfile(id: ObjectID, req: UserEditDto) {
+    let user = await this.findOneUser('id', id);
+    const user = { ...req };
+    if (!user) throw new NotFoundException('کاربر پیدا نشد');
+    return user;
+  }
 }

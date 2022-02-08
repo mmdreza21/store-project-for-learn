@@ -1,5 +1,5 @@
 import { AutoMap } from '@automapper/classes';
-import { Column, Entity, ObjectIdColumn } from 'typeorm';
+import { Column, Entity, ObjectID, ObjectIdColumn } from 'typeorm';
 
 // import { compare } from 'bcryptjs';
 
@@ -12,7 +12,7 @@ export enum Role {
 export class User {
   @AutoMap()
   @ObjectIdColumn()
-  id: any;
+  id: ObjectID;
   @AutoMap()
   @Column({ type: 'enum', enum: Role, default: Role.User })
   role: Role;
