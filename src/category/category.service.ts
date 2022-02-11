@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/Prisma.service';
+
 import { CategoryEntity } from './entities/category.entity';
 
 @Injectable()
@@ -16,8 +17,10 @@ export class CategoryService {
   }
 
   async findOne(where: Prisma.CategoryWhereUniqueInput) {
-    const cat = await this.Prisma.category.findUnique({ where });
-    if (cat) throw new NotFoundException('category whit given id ENotFound ');
+    const cat = await this.Prisma.category.findUnique({
+      where,
+    });
+    if (!cat) throw new NotFoundException('category whit given id ENotFound ');
     return cat;
   }
 

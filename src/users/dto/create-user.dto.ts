@@ -17,7 +17,7 @@ export class UserSignUpDTO {
   @ApiProperty({
     type: String,
     description: 'your name max:20,min:3',
-    default: 'mohamad reza',
+    default: 'test',
   })
   firstName: string;
 
@@ -27,7 +27,7 @@ export class UserSignUpDTO {
   @ApiProperty({
     type: String,
     description: 'lastNAme max:20,min:3',
-    default: 'javadi',
+    default: 'testing',
   })
   lastName: string;
 
@@ -36,7 +36,7 @@ export class UserSignUpDTO {
   @ApiProperty({
     type: String,
     description: 'an email address contain ~~@~~.com',
-    default: 'm@m.com',
+    default: 'test',
   })
   email: string;
 
@@ -44,7 +44,7 @@ export class UserSignUpDTO {
   @ApiProperty({
     type: String,
     description: 'it`s most be uniq',
-    default: 'mamad',
+    default: 'test',
   })
   userName: string;
 

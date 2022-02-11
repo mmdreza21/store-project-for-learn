@@ -15,6 +15,7 @@ import {
 import {
   ApiBadRequestResponse,
   ApiNoContentResponse,
+  ApiParam,
   ApiSecurity,
   ApiTags,
 } from '@nestjs/swagger';
@@ -22,12 +23,9 @@ import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/role.guard';
 import { Roles } from 'src/auth/guards/roles.decorator';
 import { Role } from 'src/users/entities/user.entity';
+
 import { CategoryService } from './category.service';
-import {
-  CatDTO,
-  CreateCategoryDto,
-  ObjectIdDto,
-} from './dto/create-category.dto';
+import { CatDTO, CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { CategoryEntity } from './entities/category.entity';
 
@@ -60,25 +58,21 @@ export class CategoryController {
     return this.mapper.mapArray(cat, CatDTO, CategoryEntity);
   }
 
-  @Get(':id')
-  async findOne(@Param('id') id: ObjectIdDto) {
-    const stringId = id.toString();
-    return this.categoryService.findOne({ id: stringId });
+  @Get('/:id')
+  async findOne(@Param('id') id: string) {
+    return this.categoryService.findOne({ id });
   }
 
   @ApiSecurity('JWT-auth')
   @Roles(Role.AdminOfSite)
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Patch(':id')
+  @ApiParam({ name: 'id' })
+  @Patch('/:id')
   async update(
-    @Param('id') id: ObjectIdDto,
+    @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ): Promise<CategoryEntity> {
-    const stringId = id.toString();
-    const cat = await this.categoryService.update(
-      { id: stringId },
-      updateCategoryDto,
-    );
+    const cat = await this.categoryService.update({ id }, updateCategoryDto);
     return this.mapper.map(cat, CatDTO, CategoryEntity);
   }
 
@@ -88,12 +82,10 @@ export class CategoryController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Delete(':id')
   async remove(
-    @Param('id') id: ObjectIdDto,
+    @Param('id') id: string,
     @Res({ passthrough: true }) res,
   ): Promise<CategoryEntity> {
-    // res.status(204);
-    const stringId = id.toString();
-    const cat = await this.categoryService.remove({ id: stringId });
+    const cat = await this.categoryService.remove({ id });
     return this.mapper.map(cat, CatDTO, CategoryEntity);
   }
 }

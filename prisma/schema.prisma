@@ -36,15 +36,17 @@ model User {
 }
 
 model Product {
-  id         String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
-  title      String
-  slug       String
-  categoryId Bytes[]  @db.ObjectId
-  category   Category @relation(fields: [categoryId], references: [id])
-  cardId     Int?
-  Cart       Cart[]
-  createdAt  DateTime @default(now()) @db.Date()
-  updatedAt  DateTime @updatedAt
+  id          String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  title       String
+  slug        String
+  description String
+  image       String[]
+  prise       Int
+  categoryId  String[] @db.ObjectId
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now()) @db.Date()
+  updatedAt   DateTime @updatedAt
+  Cart        Cart[]
 }
 
 model Category {

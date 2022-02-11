@@ -10,6 +10,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
   app.setGlobalPrefix('api');
+  // app.use()
 
   const options = new DocumentBuilder()
     .setTitle('this is documentation for store api`s')
