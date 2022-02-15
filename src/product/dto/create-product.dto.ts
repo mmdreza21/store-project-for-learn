@@ -27,7 +27,7 @@ export class CreateProductDto {
   prise: number;
   @IsNotEmpty()
   @ApiProperty({
-    description: 'a aray of category that most be a object id for the product',
+    description: 'a array of category that most be a object id for the product',
     default: ['6202b84602a7a346c39e7c30'],
   })
   @AutoMap()

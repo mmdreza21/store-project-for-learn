@@ -6,6 +6,7 @@ import { ProductModule } from './product/product.module';
 import { CartModule } from './cart/cart.module';
 import { CategoryModule } from './category/category.module';
 import { AutoMapper } from './utils/modules/autoMapper.module';
+import { ExModule } from './ex/ex.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { AutoMapper } from './utils/modules/autoMapper.module';
     CategoryModule,
     CartModule,
     AutoMapper,
+    ExModule,
   ],
   controllers: [],
   providers: [],
