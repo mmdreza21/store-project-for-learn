@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["mongoDb"]
+  transactions    = false
+}
+
+enum Role {
+  AdminOfSite
+  User
+  Seller
+}
+
+model User {
+  id             String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  role           Role      @default(User)
+  firstName      String
+  lastName       String
+  userName       String
+  password       String
+  email          String    @unique
+  phone          String?
+  addresses      String[]
+  resetPassToken String?
+  dateOfToken    DateTime?
+  Cart           Cart?
+  createdAt      DateTime  @default(now()) @db.Date()
+  updatedAt      DateTime  @updatedAt
+}
+
+model Product {
+  id          String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  title       String
+  slug        String
+  description String
+  image       String[]
+  prise       Int
+  categoryId  String[] @db.ObjectId
+  category    Category @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime @default(now()) @db.Date()
+  updatedAt   DateTime @updatedAt
+  Cart        Cart[]
+}
+
+model Category {
+  id        String    @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  Product   Product[]
+  title     String    @unique
+  createdAt DateTime  @default(now()) @db.Date()
+  updatedAt DateTime  @updatedAt
+}
+
+model Cart {
+  id        String   @id @default(dbgenerated()) @map("_id") @db.ObjectId
+  title     String
+  userId    Bytes    @unique @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  productId Bytes[]  @db.ObjectId
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now()) @db.Date()
+  updatedAt DateTime @updatedAt
+
+}
